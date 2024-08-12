@@ -21,7 +21,6 @@ jobs:
         run: |
           ls -al
           repo_name=$(basename ${{ github.event.repository.clone_url }} .git)
-          cd $repo_name
           git_url="${{ github.event.repository.clone_url }}"
           sed -i '' -e "s|tmp_proj_name|$repo_name|g" comtroller_configuration/yaml/controller_config.yml
           sed -i '' -e "s|tmp_proj_url|$git_url|g" comtroller_configuration/yaml/controller_config.yml
