@@ -1,0 +1,22 @@
+---
+controller_projects:
+- name: Templatize
+  organization: Default
+  scm_branch: main
+  scm_clean: 'no'
+  scm_delete_on_update: 'no'
+  scm_type: git
+  scm_update_on_launch: 'no'
+  scm_url: Templatize
+
+controller_templates:
+- name: Templatize
+  job_type: run
+  inventory: Demo Inventory
+  execution_environment: "AWS EE"
+  survey_enabled: true
+  survey: "{{ lookup('template', 'template_surveys/basic_survey.json') | regex_replace('\\n', '') }}"
+  project: Templatize
+  playbook: aws_playbook.yml
+  credentials:
+  - AWS Credential
