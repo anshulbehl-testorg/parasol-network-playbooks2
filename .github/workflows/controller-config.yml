@@ -23,7 +23,7 @@ jobs:
           ls -al
           repo_name=$(basename ${{ github.event.repository.clone_url }} .git)
           git_url="${{ github.event.repository.clone_url }}"
-          yq e -i ".controller_projects[0].name = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_projects[0].name = \"BLUEPRINT PROJ-$repo_name\"" comtroller_configuration/yaml/controller_config.yml
           yq e -i ".controller_projects[0].scm_url = \"$git_url\"" comtroller_configuration/yaml/controller_config.yml
           yq e -i ".controller_templates[0].name = \"BLUEPRINT-$repo_name\"" comtroller_configuration/yaml/controller_config.yml
           yq e -i ".controller_templates[0].project = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
