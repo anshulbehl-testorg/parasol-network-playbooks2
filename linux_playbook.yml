@@ -1,5 +1,5 @@
 ---
-- name: Update web servers
+- name: Update web servers test
   hosts: webservers
   become: true
 
