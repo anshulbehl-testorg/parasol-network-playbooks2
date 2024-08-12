@@ -23,9 +23,9 @@ jobs:
           repo_name=$(basename ${{ github.event.repository.clone_url }} .git)
           cd $repo_name
           git_url="${{ github.event.repository.clone_url }}"
-          sed -i '' "s|tmp_proj_name|$repo_name|g" comtroller_configuration/yaml/controller_config.yml
-          sed -i '' "s|tmp_proj_url|$git_url|g" comtroller_configuration/yaml/controller_config.yml
-          sed -i '' "s|tmp_jt_name|BLUEPRINT-$repo_name|g" comtroller_configuration/yaml/controller_config.yml
+          sed -i '' -e "s|tmp_proj_name|$repo_name|g" comtroller_configuration/yaml/controller_config.yml
+          sed -i '' -e "s|tmp_proj_url|$git_url|g" comtroller_configuration/yaml/controller_config.yml
+          sed -i '' -e "s|tmp_jt_name|BLUEPRINT-$repo_name|g" comtroller_configuration/yaml/controller_config.yml
 
       - name: Run Ansible Playbook to Configure Controller
         run: ansible-playbook central-actions/controller_configuration/playbook.yml
