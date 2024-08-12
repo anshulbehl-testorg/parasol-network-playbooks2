@@ -19,6 +19,7 @@ jobs:
 
       - name: Update Project and Job Template Names
         run: |
+          ls -al
           repo_name=$(basename ${{ github.event.repository.clone_url }} .git)
           cd $repo_name
           git_url="${{ github.event.repository.clone_url }}"
