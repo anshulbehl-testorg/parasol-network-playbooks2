@@ -1,0 +1,40 @@
+name: Configure Controller Projects and Jobs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  configure-controller:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Checkout Org Central Actions Repository
+        uses: actions/checkout@v2
+        with:
+          repository: your-org/org-central-actions  # Replace with your org and repo name
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: central-actions
+
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
+
+      - name: Update Project and Job Template Names
+        run: |
+          repo_name=$(basename ${{ github.event.repository.clone_url }} .git)
+          git_url="${{ github.event.repository.clone_url }}"
+          sed -i "s/tmp_proj_name/$repo_name/g" comtroller_configuration/yaml/controller_config.yml
+          sed -i "s/tmp_proj_url/$git_url/g" comtroller_configuration/yaml/controller_config.yml
+          sed -i "s/tmp_jt_name/$repo_name/g" comtroller_configuration/yaml/controller_config.yml
+
+      - name: Run Ansible Playbook to Configure Controller
+        run: ansible-playbook central-actions/controller_configuration/playbook.yml
+        env:
+          CONTROLLER_HOST: ${{ secrets.CONTROLLER_HOST }}
+          CONTROLLER_USERNAME: ${{ secrets.CONTROLLER_USERNAME }}
+          CONTROLLER_PASSWORD: ${{ secrets.CONTROLLER_PASSWORD }}
