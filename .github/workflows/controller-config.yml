@@ -23,10 +23,10 @@ jobs:
           ls -al
           repo_name=$(basename ${{ github.event.repository.clone_url }} .git)
           git_url="${{ github.event.repository.clone_url }}"
-          yq e -i ".controller_projects.name = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
-          yq e -i ".controller_projects.scm_url = \"$git_url\"" comtroller_configuration/yaml/controller_config.yml
-          yq e -i ".controller_templates.name = \"BLUEPRINT-$repo_name\"" comtroller_configuration/yaml/controller_config.yml
-          yq e -i ".controller_templates.project = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_projects[0].name = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_projects[0].scm_url = \"$git_url\"" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_templates[0].name = \"BLUEPRINT-$repo_name\"" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_templates[0].project = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
 
       - name: Run Ansible Playbook to Configure Controller
         run: ansible-playbook central-actions/controller_configuration/playbook.yml
