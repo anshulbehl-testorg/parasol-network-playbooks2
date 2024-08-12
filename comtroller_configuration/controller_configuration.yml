@@ -2,6 +2,8 @@
 - name: Playbook to configure ansible controller post installation
   hosts: localhost
   connection: local
+  vars:
+    - controller_configuration_async_retries: 50
   pre_tasks:
     - name: Include vars from controller_configs directory
       ansible.builtin.include_vars:
