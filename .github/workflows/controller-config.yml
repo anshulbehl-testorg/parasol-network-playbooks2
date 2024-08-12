@@ -15,16 +15,18 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Ansible
-        run: sudo apt-get update && sudo apt-get install -y ansible-core
+        run: sudo apt-get update && sudo apt-get install -y ansible-core && sudo wget https://github.com/mikefarah/yq/releases/download/v4.12.2/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+
 
       - name: Update Project and Job Template Names
         run: |
           ls -al
           repo_name=$(basename ${{ github.event.repository.clone_url }} .git)
           git_url="${{ github.event.repository.clone_url }}"
-          sed -i '' -e "s|tmp_proj_name|$repo_name|g" comtroller_configuration/yaml/controller_config.yml
-          sed -i '' -e "s|tmp_proj_url|$git_url|g" comtroller_configuration/yaml/controller_config.yml
-          sed -i '' -e "s|tmp_jt_name|BLUEPRINT-$repo_name|g" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_projects.name = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_projects.scm_url = \"$git_url\"" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_templates.name = \"BLUEPRINT-$repo_name\"" comtroller_configuration/yaml/controller_config.yml
+          yq e -i ".controller_templates.project = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
 
       - name: Run Ansible Playbook to Configure Controller
         run: ansible-playbook central-actions/controller_configuration/playbook.yml
