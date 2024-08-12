@@ -14,13 +14,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Checkout Org Central Actions Repository
-        uses: actions/checkout@v2
-        with:
-          repository: your-org/org-central-actions  # Replace with your org and repo name
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: central-actions
-
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
 
