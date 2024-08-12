@@ -29,7 +29,7 @@ jobs:
           yq e -i ".controller_templates[0].project = \"$repo_name\"" comtroller_configuration/yaml/controller_config.yml
 
       - name: Run Ansible Playbook to Configure Controller
-        run: ansible-playbook comtroller_configuration/controller_configuration.yml
+        run: ansible-galaxy collection install infra.controller_configuration && ansible-playbook comtroller_configuration/controller_configuration.yml
         env:
           CONTROLLER_HOST: ${{ secrets.CONTROLLER_HOST }}
           CONTROLLER_USERNAME: ${{ secrets.CONTROLLER_USERNAME }}
